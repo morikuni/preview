@@ -4,7 +4,9 @@ import (
 	"fmt"
 	gimage "image"
 	"math"
-	// support gif, jpeg, png
+	// for support
+	_ "golang.org/x/image/bmp"
+	_ "golang.org/x/image/tiff"
 	_ "image/gif"
 	_ "image/jpeg"
 	_ "image/png"
@@ -119,5 +121,5 @@ func NewImage(f *os.File, conf *preview.Config) (preview.Renderer, error) {
 }
 
 func init() {
-	preview.Register([]string{"jpg", "png", "gif"}, NewImage)
+	preview.Register([]string{"jpg", "png", "gif", "tiff", "bmp"}, NewImage)
 }

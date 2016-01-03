@@ -21,4 +21,6 @@ $ preview -width 64 lena.png
 - png
 - jpg
 - gif
+- tiff
+- bmp
 - txt
