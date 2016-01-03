@@ -25,7 +25,7 @@ func NewConfig(args []string) (*Config, []string, error) {
 	flags := flag.NewFlagSet("preview", flag.ContinueOnError)
 	width := flags.Uint("width", 0, "max width (default terminal width)")
 	height := flags.Uint("height", 128, "max height")
-	color := flags.Bool("c3", false, "use only 8 color (default 256 color)")
+	color := flags.Bool("c8", false, "use only 8 color (default 256 color)")
 
 	if err := flags.Parse(args); err != nil {
 		return nil, nil, err
