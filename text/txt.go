@@ -10,26 +10,17 @@ import (
 	"github.com/morikuni/preview"
 )
 
-type text struct {
-	buf [][]byte
-}
-
-// Render is implementation of Renderer.
-func (t *text) Render(w io.Writer) error {
-	for _, b := range t.buf {
-		if _, err := w.Write(b); err != nil {
-			return nil
-		}
+// PreviewTxt print text file.
+func PreviewTxt(path string, out io.Writer, conf *preview.Config) error {
+	f, err := os.Open(path)
+	if err != nil {
+		return err
 	}
-	return nil
-}
 
-// NewText is RendererConstructor.
-func NewText(f *os.File, conf *preview.Config) (preview.Renderer, error) {
 	ext := filepath.Ext(f.Name())
 
 	if ext != ".txt" && ext != ".text" {
-		return nil, preview.NotSupportedError
+		return preview.NotSupportedError
 	}
 
 	buf := make([][]byte, conf.Height)
@@ -44,7 +35,7 @@ func NewText(f *os.File, conf *preview.Config) (preview.Renderer, error) {
 				buf = buf[:i]
 				break
 			} else {
-				return nil, err
+				return err
 			}
 		}
 		b := make([]byte, int(math.Min(float64(conf.Width), float64(len(line)))))
@@ -57,9 +48,14 @@ func NewText(f *os.File, conf *preview.Config) (preview.Renderer, error) {
 		}
 	}
 
-	return &text{buf}, nil
+	for _, b := range buf {
+		if _, err := out.Write(b); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func init() {
-	preview.Register([]string{"txt", "text"}, NewText)
+	preview.Register([]string{"txt"}, PreviewTxt)
 }
