@@ -59,3 +59,20 @@ func NewRenderer(f *os.File, conf *Config) (Renderer, error) {
 
 	return r, nil
 }
+
+// Preview print a file to out with conf.
+func Preview(path string, out io.Writer, conf *Config) error {
+	file, err := os.Open(path)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	r, err := NewRenderer(file, conf)
+	if err != nil {
+		return err
+	}
+	r.Render(out)
+
+	return nil
+}

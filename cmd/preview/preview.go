@@ -17,21 +17,11 @@ func main() {
 		return
 	}
 
-	for _, fname := range args {
-		file, err := os.Open(fname)
+	for _, path := range args {
 		fmt.Fprintln(os.Stdout)
-		fmt.Fprintln(os.Stdout, fname)
-		if err != nil {
+		fmt.Fprintln(os.Stdout, path)
+		if err := preview.Preview(path, os.Stdout, conf); err != nil {
 			fmt.Fprintln(os.Stderr, err)
-			continue
 		}
-		defer file.Close()
-
-		r, err := preview.NewRenderer(file, conf)
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-			continue
-		}
-		r.Render(os.Stdout)
 	}
 }
