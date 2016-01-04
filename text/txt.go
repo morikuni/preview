@@ -2,6 +2,7 @@ package text
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"math"
 	"os"
@@ -25,10 +26,10 @@ func PreviewTxt(path string, out io.Writer, conf *preview.Config) error {
 
 	buf := make([][]byte, conf.Height)
 
-	r := bufio.NewReader(f)
+	sc := bufio.NewScanner(f)
 
-	for i := range buf {
-		line, isP, err := r.ReadLine()
+	for i := uint(0); i < conf.Height && sc.Scan(); i++ {
+		line := sc.Text()
 
 		if err != nil {
 			if err == io.EOF {
@@ -38,21 +39,13 @@ func PreviewTxt(path string, out io.Writer, conf *preview.Config) error {
 				return err
 			}
 		}
-		b := make([]byte, int(math.Min(float64(conf.Width), float64(len(line)))))
-		copy(b, line)
-		buf[i] = append(b, '\n')
+		b := line[:int(math.Min(float64(conf.Width), float64(len(line))))]
 
-		if isP {
-			for _, x, _ := r.ReadLine(); x; {
-			}
-		}
-	}
-
-	for _, b := range buf {
-		if _, err := out.Write(b); err != nil {
+		if _, err := fmt.Fprintln(out, string(b)); err != nil {
 			return err
 		}
 	}
+
 	return nil
 }
 
