@@ -62,7 +62,7 @@ func PreviewImage(path string, out io.Writer, conf *preview.Config) error {
 
 	img, _, err := gimage.Decode(f)
 	if err != nil {
-		return preview.NotSupportedError
+		return preview.UnsupportedError
 	}
 
 	var cf colorFunc

@@ -21,7 +21,7 @@ func PreviewTxt(path string, out io.Writer, conf *preview.Config) error {
 	ext := filepath.Ext(f.Name())
 
 	if ext != ".txt" && ext != ".text" {
-		return preview.NotSupportedError
+		return preview.UnsupportedError
 	}
 
 	buf := make([][]byte, conf.Height)

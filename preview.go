@@ -6,8 +6,8 @@ import (
 )
 
 const (
-	// NotSupportedError is used when a given file is not supported.
-	NotSupportedError = previewError("not supported file type.")
+	// UnsupportedError is used when a given file is not supported.
+	UnsupportedError = previewError("not supported file type.")
 )
 
 type previewError string
@@ -45,11 +45,11 @@ func Preview(path string, out io.Writer, conf *Config) error {
 
 	for _, s := range supports {
 		result := s.pf(path, out, conf)
-		if result == NotSupportedError {
+		if result == UnsupportedError {
 			continue
 		}
 		return result
 	}
 
-	return NotSupportedError
+	return UnsupportedError
 }
